@@ -24,7 +24,7 @@ An echo server: bind to an ephemeral port, accept a connection, echo the bytes b
 import IO
 import Kernel
 import Sockets
-import Span_Raw_Primitives
+import Span_Raw
 
 let io: IO<Sockets.Capabilities> = .blocking()
 let listener = try Sockets.TCP.Listener.blocking(
@@ -57,7 +57,7 @@ Add swift-sockets to your Package.swift:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-foundations/swift-sockets.git", branch: "main")
+    .package(url: "https://github.com/swift-compositions/swift-sockets.git", branch: "main")
 ]
 ```
 

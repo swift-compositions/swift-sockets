@@ -1,7 +1,7 @@
 import IO
 import Kernel
 import Sockets
-import Span_Raw_Primitives
+import Span_Raw
 import Testing
 
 extension Sockets.UDP.Endpoint {

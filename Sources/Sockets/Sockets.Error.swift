@@ -20,6 +20,6 @@ extension Sockets {
 
         case timeout
 
-        case platform(Error_Primitives.Error.Code)
+        case platform(Error.Error.Code)
     }
 }

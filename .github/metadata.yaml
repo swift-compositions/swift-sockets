@@ -2,7 +2,7 @@
 # Triaged by AI-assisted bulk pass (2026-04-29).
 description: "TCP listener actors and move-only connections with typed throws and half-close for Swift."
 topics:
-  - foundations
+  - compositions
   - sockets
 homepage: "https://swift-institute.org"
 readme:

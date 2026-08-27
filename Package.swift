@@ -15,16 +15,16 @@ let package = Package(
         .library(name: "Sockets", targets: ["Sockets"])
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-foundations/swift-io.git", branch: "main"),
-        .package(url: "https://github.com/swift-foundations/swift-kernel.git", branch: "main"),
-        .package(url: "https://github.com/swift-foundations/swift-threads.git", branch: "main"),
-        .package(url: "https://github.com/swift-foundations/swift-executors.git", branch: "main"),
+        .package(url: "https://github.com/swift-compositions/swift-io.git", branch: "main"),
+        .package(url: "https://github.com/swift-compositions/swift-kernel.git", branch: "main"),
+        .package(url: "https://github.com/swift-compositions/swift-threads.git", branch: "main"),
+        .package(url: "https://github.com/swift-compositions/swift-executors.git", branch: "main"),
         .package(
-            url: "https://github.com/swift-primitives/swift-span-primitives.git",
+            url: "https://github.com/swift-molecules/swift-span.git",
             branch: "main"
         ),
 
-        .package(url: "https://github.com/swift-foundations/swift-posix.git", branch: "main"),
+        .package(url: "https://github.com/swift-compositions/swift-posix.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -34,7 +34,7 @@ let package = Package(
                 .product(name: "Kernel", package: "swift-kernel"),
                 .product(name: "Thread Actor", package: "swift-threads"),
                 .product(name: "Executors", package: "swift-executors"),
-                .product(name: "Span Raw Primitives", package: "swift-span-primitives"),
+                .product(name: "Span Raw", package: "swift-span"),
             ]
         ),
         .testTarget(
@@ -43,7 +43,7 @@ let package = Package(
                 "Sockets",
                 .product(name: "IO", package: "swift-io"),
                 .product(name: "Kernel", package: "swift-kernel"),
-                .product(name: "Span Raw Primitives", package: "swift-span-primitives"),
+                .product(name: "Span Raw", package: "swift-span"),
 
                 .product(name: "Thread Actor", package: "swift-threads"),
                 .product(name: "Executors", package: "swift-executors"),

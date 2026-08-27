@@ -1,5 +1,5 @@
 internal import Kernel
-internal import Span_Raw_Primitives
+internal import Span_Raw
 internal import Thread_Actor
 
 extension Kernel.Thread.Actor {

@@ -1,5 +1,5 @@
 public import Kernel
-public import Span_Raw_Primitives
+public import Span_Raw
 
 extension Sockets {
 
