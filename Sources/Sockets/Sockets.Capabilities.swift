@@ -1,5 +1,5 @@
 public import Kernel
-public import Span_Raw
+public import Span
 
 extension Sockets {
 

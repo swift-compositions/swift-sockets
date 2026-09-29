@@ -3,7 +3,7 @@ import IO_Kernel
 import Kernel
 import POSIX_Kernel_Poll
 import Sockets
-import Span_Raw
+import Span
 import Thread_Actor
 
 private let _reactiveTestExecutors: Kernel.Thread.Executor.Sharded = .init()

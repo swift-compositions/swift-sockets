@@ -1,6 +1,6 @@
 public import IO_Kernel
 public import Kernel
-public import Span_Raw
+public import Span
 
 extension IO.Kernel where Capabilities == Sockets.Capabilities {
 

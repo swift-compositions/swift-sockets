@@ -31,7 +31,7 @@ let package = Package(
                 .product(name: "Kernel", package: "swift-kernel"),
                 .product(name: "Thread Actor", package: "swift-threads"),
                 .product(name: "Executors", package: "swift-executors"),
-                .product(name: "Span Raw", package: "swift-span"),
+                .product(name: "Span", package: "swift-span"),
             ]
         ),
         .testTarget(
@@ -40,7 +40,7 @@ let package = Package(
                 "Sockets",
                 .product(name: "IO Kernel", package: "swift-io-kernel"),
                 .product(name: "Kernel", package: "swift-kernel"),
-                .product(name: "Span Raw", package: "swift-span"),
+                .product(name: "Span", package: "swift-span"),
 
                 .product(name: "Thread Actor", package: "swift-threads"),
                 .product(name: "Executors", package: "swift-executors"),

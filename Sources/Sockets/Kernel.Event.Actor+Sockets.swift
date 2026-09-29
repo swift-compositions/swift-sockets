@@ -1,6 +1,6 @@
 internal import IO_Kernel
 internal import Kernel
-internal import Span_Raw
+internal import Span
 
 extension Kernel.Event.Actor {
 

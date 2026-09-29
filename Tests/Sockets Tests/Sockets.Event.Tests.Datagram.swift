@@ -1,6 +1,6 @@
 import IO_Kernel
 import Kernel
-import Span_Raw
+import Span
 import Testing
 
 @testable import Sockets
