@@ -65,7 +65,7 @@ extension Kernel.Event.Actor {
                     address: address,
                     addressLength: length
                 )
-            } catch  where Error.Error.Code.POSIX.isEAGAIN(error.code) {
+            } catch  where Error::Error.Code.POSIX.isEAGAIN(error.code) {
                 try await wait(for: registration, interest: .write)
             } catch {
                 throw .right(.platform(error.code))
@@ -95,7 +95,7 @@ extension Kernel.Event.Actor {
                     peer: result.address,
                     length: result.addressLength
                 )
-            } catch  where Error.Error.Code.POSIX.isEAGAIN(error.code) {
+            } catch  where Error::Error.Code.POSIX.isEAGAIN(error.code) {
                 try await wait(for: registration, interest: .read)
             } catch {
                 throw .right(.platform(error.code))

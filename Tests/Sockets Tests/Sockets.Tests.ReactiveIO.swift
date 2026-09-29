@@ -74,7 +74,7 @@ extension Kernel.Thread.Actor {
             do throws(Kernel.IO.Read.Error) {
                 return try unsafe Kernel.IO.Read.read(descriptor, into: unsafe buffer.base.nonNull)
             } catch {
-                guard Error.Error.Code.POSIX.isEAGAIN(error.code) else {
+                guard Error::Error.Code.POSIX.isEAGAIN(error.code) else {
                     throw .platform(error.code)
                 }
             }
@@ -93,7 +93,7 @@ extension Kernel.Thread.Actor {
                     from: unsafe buffer.base.nonNull
                 )
             } catch {
-                guard Error.Error.Code.POSIX.isEAGAIN(error.code) else {
+                guard Error::Error.Code.POSIX.isEAGAIN(error.code) else {
                     throw .platform(error.code)
                 }
             }
@@ -116,7 +116,7 @@ extension Kernel.Thread.Actor {
                     addressLength: length
                 )
             } catch {
-                guard Error.Error.Code.POSIX.isEAGAIN(error.code) else {
+                guard Error::Error.Code.POSIX.isEAGAIN(error.code) else {
                     throw .platform(error.code)
                 }
             }
@@ -137,7 +137,7 @@ extension Kernel.Thread.Actor {
                 let result = try POSIX.Kernel.Socket.Receive.from(descriptor, into: &span)
                 return (count: result.count, peer: result.address, length: result.addressLength)
             } catch {
-                guard Error.Error.Code.POSIX.isEAGAIN(error.code) else {
+                guard Error::Error.Code.POSIX.isEAGAIN(error.code) else {
                     throw .platform(error.code)
                 }
             }
@@ -151,7 +151,7 @@ extension Kernel.Thread.Actor {
     ) throws(Sockets.Error) {
         let events: POSIX.Kernel.Poll.Events = interest.contains(.write) ? .output : .input
         var entries = [POSIX.Kernel.Poll.Entry(descriptor, requested: events)]
-        do throws(Error.Error) {
+        do throws(Error::Error) {
             _ = try POSIX.Kernel.Poll.poll(&entries, timeout: -1)
         } catch {
             throw .platform(error.code)

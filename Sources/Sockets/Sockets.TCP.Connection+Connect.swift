@@ -56,7 +56,7 @@ extension Sockets.TCP.Connection {
 
         try await ready(descriptor, .write)
 
-        let pending: Error.Error.Code
+        let pending: Error::Error.Code
         do throws(Kernel.Socket.Error) {
             pending = try ISO_9945.Kernel.Socket.getError(descriptor)
         } catch {
