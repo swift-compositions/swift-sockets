@@ -2,7 +2,7 @@
 
     import Testing
     import Kernel
-    import IO
+    import IO_Kernel
     import Sockets
 
     extension Sockets.TCP.Listener.Tests {
@@ -15,10 +15,10 @@
         @Test
         func `blocking listener sleeps in kernel during idle accept`() async throws {
             let measurement = Measurement()
-            let baseServerIO = IO<Sockets.Capabilities>.blocking()
+            let baseServerIO = IO.Kernel<Sockets.Capabilities>.blocking()
             let listenerIO = measurement.wrap.listener(wrapping: baseServerIO)
             let acceptedIO = measurement.wrap.accepted(wrapping: baseServerIO)
-            let clientIO = IO<Sockets.Capabilities>.blocking()
+            let clientIO = IO.Kernel<Sockets.Capabilities>.blocking()
             let listener = try Sockets.TCP.Listener.blocking(
                 address: Kernel.Socket.Address.IPv4.loopback(port: 0),
                 io: listenerIO

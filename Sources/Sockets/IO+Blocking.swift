@@ -1,15 +1,15 @@
 public import Executors
-public import IO
+public import IO_Kernel
 internal import Thread_Actor
 
-extension IO where Capabilities == Sockets.Capabilities {
+extension IO.Kernel where Capabilities == Sockets.Capabilities {
 
-    public static func blocking() -> IO<Sockets.Capabilities> {
+    public static func blocking() -> IO.Kernel<Sockets.Capabilities> {
         blocking(on: _sharedExecutors.next())
     }
 
-    public static func blocking(on executor: Kernel.Thread.Executor) -> IO<Sockets.Capabilities> {
-        let actor = Kernel.Thread.Actor(executor: executor)
+    public static func blocking(on executor: Kernel::Kernel.Thread.Executor) -> IO.Kernel<Sockets.Capabilities> {
+        let actor = Kernel::Kernel.Thread.Actor(executor: executor)
         let capabilities = Sockets.Capabilities(
             prepare: { _ throws(Sockets.Error) in },
             read: { fd, buffer throws(Sockets.Error) -> Int in
@@ -40,8 +40,8 @@ extension IO where Capabilities == Sockets.Capabilities {
 
             }
         )
-        return IO(capabilities: capabilities, runner: runner)
+        return IO.Kernel(capabilities: capabilities, runner: runner)
     }
 }
 
-private let _sharedExecutors: Kernel.Thread.Executor.Sharded = .init()
+private let _sharedExecutors: Kernel::Kernel.Thread.Executor.Sharded = .init()

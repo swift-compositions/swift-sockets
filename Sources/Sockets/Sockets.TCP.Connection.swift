@@ -1,4 +1,4 @@
-public import IO
+public import IO_Kernel
 public import Kernel
 public import Span_Raw
 
@@ -10,12 +10,12 @@ extension Sockets.TCP {
 
         public let peer: Kernel.Socket.Address.Storage
 
-        public let io: IO<Sockets.Capabilities>
+        public let io: IO.Kernel<Sockets.Capabilities>
 
         internal init(
             descriptor: consuming Kernel.Descriptor,
             peer: Kernel.Socket.Address.Storage,
-            io: IO<Sockets.Capabilities>
+            io: IO.Kernel<Sockets.Capabilities>
         ) {
             self.descriptor = descriptor
             self.peer = peer

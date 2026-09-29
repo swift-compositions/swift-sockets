@@ -1,4 +1,4 @@
-import IO
+import IO_Kernel
 import Kernel
 import Sockets
 import Span_Raw
@@ -18,7 +18,7 @@ extension Sockets.TCP.Listener.Tests.`Multiple Connections` {
         strategy: Sockets.TCP.Listener.Tests.Strategy
     ) async throws {
         let (_, listener) = try await Sockets.TCP.Listener.Tests.Strategy.makeServer(strategy)
-        let clientIO = IO<Sockets.Capabilities>.blocking()
+        let clientIO = IO.Kernel<Sockets.Capabilities>.blocking()
         let port = try await listener.port()
 
         let payloads: [[UInt8]] = [
@@ -93,7 +93,7 @@ private func serverSideEcho(listener: Sockets.TCP.Listener) async throws -> [UIn
 }
 
 private func clientSideRoundTrip(
-    io: IO<Sockets.Capabilities>,
+    io: IO.Kernel<Sockets.Capabilities>,
     port: UInt16,
     payload: [UInt8]
 ) async throws -> [UInt8] {

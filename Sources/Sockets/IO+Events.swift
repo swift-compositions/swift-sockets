@@ -1,43 +1,43 @@
-public import IO
+public import IO_Kernel
 internal import Kernel
 
 extension Sockets.Event {
 
     internal static func prepare(
-        _ descriptor: borrowing Kernel.Descriptor
+        _ descriptor: borrowing Kernel::Kernel.Descriptor
     ) throws(Sockets.Error) {
-        do throws(Kernel.File.Control.Error) {
-            try Kernel.File.Control.setNonBlocking(descriptor)
+        do throws(Kernel::Kernel.File.Control.Error) {
+            try Kernel::Kernel.File.Control.setNonBlocking(descriptor)
         } catch {
             throw Sockets.Error(error)
         }
     }
 
-    internal static func close(_ descriptor: consuming Kernel.Descriptor) {
-        do throws(Kernel.Close.Error) {
-            try Kernel.Close.close(consume descriptor)
+    internal static func close(_ descriptor: consuming Kernel::Kernel.Descriptor) {
+        do throws(Kernel::Kernel.Close.Error) {
+            try Kernel::Kernel.Close.close(consume descriptor)
         } catch {}
     }
 }
 
-extension IO where Capabilities == Sockets.Capabilities {
+extension IO.Kernel where Capabilities == Sockets.Capabilities {
 
     public static func events(
-        on actor: Kernel.Event.Actor
-    ) -> IO<Sockets.Capabilities> {
+        on actor: Kernel::Kernel.Event.Actor
+    ) -> IO.Kernel<Sockets.Capabilities> {
         let capabilities = Sockets.Capabilities(
             prepare: { descriptor throws(Sockets.Error) in
                 try Sockets.Event.prepare(descriptor)
             },
             read: { descriptor, buffer throws(Sockets.Error) -> Int in
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     return try await actor.read(from: descriptor, into: buffer)
                 } catch {
                     throw Sockets.Error(error)
                 }
             },
             write: { descriptor, buffer throws(Sockets.Error) -> Int in
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     return try await actor.write(to: descriptor, from: buffer)
                 } catch {
                     throw Sockets.Error(error)
@@ -47,7 +47,7 @@ extension IO where Capabilities == Sockets.Capabilities {
                 await actor.close(consume descriptor)
             },
             ready: { descriptor, interest throws(Sockets.Error) in
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     try await actor.ready(from: descriptor, interest: interest)
                 } catch {
                     throw Sockets.Error(error)
@@ -59,7 +59,7 @@ extension IO where Capabilities == Sockets.Capabilities {
                     to: address,
                     length: length,
                     ready: { descriptor, interest throws(Sockets.Error) in
-                        do throws(Kernel.Event.Failure) {
+                        do throws(Kernel::Kernel.Event.Failure) {
                             try await actor.ready(from: descriptor, interest: interest)
                         } catch {
                             throw Sockets.Error(error)
@@ -68,7 +68,7 @@ extension IO where Capabilities == Sockets.Capabilities {
                 )
             },
             send: { descriptor, buffer, address, length throws(Sockets.Error) -> Int in
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     return try await actor.send(
                         on: descriptor,
                         from: buffer,
@@ -80,7 +80,7 @@ extension IO where Capabilities == Sockets.Capabilities {
                 }
             },
             receive: { descriptor, buffer throws(Sockets.Error) in
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     return try await actor.receive(on: descriptor, into: buffer)
                 } catch {
                     throw Sockets.Error(error)
@@ -93,11 +93,11 @@ extension IO where Capabilities == Sockets.Capabilities {
 
             }
         )
-        return IO(capabilities: capabilities, runner: runner)
+        return IO.Kernel(capabilities: capabilities, runner: runner)
     }
 
-    public static func events() throws(Kernel.Event.Failure) -> IO<Sockets.Capabilities> {
-        let actor = try Kernel.Event.Actor()
+    public static func events() throws(Kernel::Kernel.Event.Failure) -> IO.Kernel<Sockets.Capabilities> {
+        let actor = try Kernel::Kernel.Event.Actor()
         let owner = Sockets.Event.Owner(actor)
         let capabilities = Sockets.Capabilities(
             prepare: { descriptor throws(Sockets.Error) in
@@ -106,7 +106,7 @@ extension IO where Capabilities == Sockets.Capabilities {
             },
             read: { descriptor, buffer throws(Sockets.Error) -> Int in
                 let actor = try owner.snapshot()
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     return try await actor.read(from: descriptor, into: buffer)
                 } catch {
                     throw Sockets.Error(error)
@@ -114,7 +114,7 @@ extension IO where Capabilities == Sockets.Capabilities {
             },
             write: { descriptor, buffer throws(Sockets.Error) -> Int in
                 let actor = try owner.snapshot()
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     return try await actor.write(to: descriptor, from: buffer)
                 } catch {
                     throw Sockets.Error(error)
@@ -129,7 +129,7 @@ extension IO where Capabilities == Sockets.Capabilities {
             },
             ready: { descriptor, interest throws(Sockets.Error) in
                 let actor = try owner.snapshot()
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     try await actor.ready(from: descriptor, interest: interest)
                 } catch {
                     throw Sockets.Error(error)
@@ -142,7 +142,7 @@ extension IO where Capabilities == Sockets.Capabilities {
                     to: address,
                     length: length,
                     ready: { descriptor, interest throws(Sockets.Error) in
-                        do throws(Kernel.Event.Failure) {
+                        do throws(Kernel::Kernel.Event.Failure) {
                             try await actor.ready(from: descriptor, interest: interest)
                         } catch {
                             throw Sockets.Error(error)
@@ -152,7 +152,7 @@ extension IO where Capabilities == Sockets.Capabilities {
             },
             send: { descriptor, buffer, address, length throws(Sockets.Error) -> Int in
                 let actor = try owner.snapshot()
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     return try await actor.send(
                         on: descriptor,
                         from: buffer,
@@ -165,7 +165,7 @@ extension IO where Capabilities == Sockets.Capabilities {
             },
             receive: { descriptor, buffer throws(Sockets.Error) in
                 let actor = try owner.snapshot()
-                do throws(Kernel.Event.Failure) {
+                do throws(Kernel::Kernel.Event.Failure) {
                     return try await actor.receive(on: descriptor, into: buffer)
                 } catch {
                     throw Sockets.Error(error)
@@ -178,6 +178,6 @@ extension IO where Capabilities == Sockets.Capabilities {
                 await owner.shutdown()
             }
         )
-        return IO(capabilities: capabilities, runner: runner)
+        return IO.Kernel(capabilities: capabilities, runner: runner)
     }
 }

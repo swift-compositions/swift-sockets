@@ -1,5 +1,5 @@
 import Executors
-import IO
+import IO_Kernel
 import Kernel
 import POSIX_Kernel_Poll
 import Sockets
@@ -8,7 +8,7 @@ import Thread_Actor
 
 private let _reactiveTestExecutors: Kernel.Thread.Executor.Sharded = .init()
 
-func makeReactiveIO() -> IO<Sockets.Capabilities> {
+func makeReactiveIO() -> IO.Kernel<Sockets.Capabilities> {
     let actor = Kernel.Thread.Actor(executor: _reactiveTestExecutors.next())
     let capabilities = Sockets.Capabilities(
         prepare: { fd throws(Sockets.Error) in
@@ -55,13 +55,13 @@ func makeReactiveIO() -> IO<Sockets.Capabilities> {
             try await actor.testReactiveReceive(on: fd, into: buffer)
         }
     )
-    let runner = unsafe IO<Sockets.Capabilities>.Runner(
+    let runner = unsafe IO.Kernel<Sockets.Capabilities>.Runner(
         executor: { unsafe actor.unownedExecutor },
         shutdown: {
 
         }
     )
-    return IO(capabilities: capabilities, runner: runner)
+    return IO.Kernel(capabilities: capabilities, runner: runner)
 }
 
 extension Kernel.Thread.Actor {

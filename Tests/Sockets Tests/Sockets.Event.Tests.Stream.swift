@@ -1,4 +1,4 @@
-import IO
+import IO_Kernel
 import Kernel
 import Span_Raw
 import Testing
@@ -8,7 +8,7 @@ import Testing
 extension Sockets.Event.Tests {
     @Test
     func `IPv4 event connect preserves partial write counts and all bytes through EOF`() async {
-        let io: IO<Sockets.Capabilities>
+        let io: IO.Kernel<Sockets.Capabilities>
         do throws(Kernel.Event.Failure) {
             io = try .events()
         } catch {
@@ -140,7 +140,7 @@ extension Sockets.Event.Tests {
 
     @Test
     func `IPv6 event connect reads writes and observes peer EOF`() async {
-        let io: IO<Sockets.Capabilities>
+        let io: IO.Kernel<Sockets.Capabilities>
         do throws(Kernel.Event.Failure) {
             io = try .events()
         } catch {

@@ -1,4 +1,4 @@
-internal import IO
+internal import IO_Kernel
 internal import Kernel
 internal import Synchronization
 

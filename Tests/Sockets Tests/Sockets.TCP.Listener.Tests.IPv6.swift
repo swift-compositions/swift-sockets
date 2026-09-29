@@ -1,4 +1,4 @@
-import IO
+import IO_Kernel
 import Kernel
 import Sockets
 import Span_Raw
@@ -39,7 +39,7 @@ extension Sockets.TCP.Listener.Tests.`Sockets.TCP.Listener — IPv6 echo` {
 
 private func makeIPv6Server(
     _ strategy: Sockets.TCP.Listener.Tests.Strategy
-) async throws -> (IO<Sockets.Capabilities>, Sockets.TCP.Listener) {
+) async throws -> (IO.Kernel<Sockets.Capabilities>, Sockets.TCP.Listener) {
     let io = strategy.makeIO()
     let listener: Sockets.TCP.Listener
     switch strategy {
@@ -86,7 +86,7 @@ private func serverSideEcho(listener: Sockets.TCP.Listener) async throws -> [UIn
 }
 
 private func clientSideRoundTrip(
-    io: IO<Sockets.Capabilities>,
+    io: IO.Kernel<Sockets.Capabilities>,
     port: UInt16,
     payload: [UInt8]
 ) async throws -> [UInt8] {

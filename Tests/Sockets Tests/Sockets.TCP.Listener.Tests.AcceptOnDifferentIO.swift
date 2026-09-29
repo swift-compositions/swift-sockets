@@ -1,5 +1,5 @@
 import Executors
-import IO
+import IO_Kernel
 import Kernel
 import Sockets
 import Span_Raw
@@ -27,7 +27,7 @@ extension Sockets.TCP.Listener.Tests.`Accept On Different IO` {
             clientExecutor.shutdown()
         }
 
-        let listenerIO = IO<Sockets.Capabilities>.blocking(on: listenerExecutor)
+        let listenerIO = IO.Kernel<Sockets.Capabilities>.blocking(on: listenerExecutor)
         let listener = try Sockets.TCP.Listener.blocking(
             address: Kernel.Socket.Address.IPv4.loopback(port: 0),
             io: listenerIO
@@ -58,7 +58,7 @@ extension Sockets.TCP.Listener.Tests.`Accept On Different IO` {
                     address: Kernel.Socket.Address.IPv4.loopback(port: port)
                 )
                 let descriptor = consume socket
-                let clientIO = IO<Sockets.Capabilities>.blocking(on: clientExecutor)
+                let clientIO = IO.Kernel<Sockets.Capabilities>.blocking(on: clientExecutor)
 
                 let writeBuffer = UnsafeMutableRawBufferPointer.allocate(
                     byteCount: payload.count,
@@ -78,7 +78,7 @@ extension Sockets.TCP.Listener.Tests.`Accept On Different IO` {
         let fired = await marker.wasHit
         #expect(
             fired,
-            "accept(io:) must route the accepted connection's capabilities through the explicitly supplied IO, not the listener's own IO."
+            "accept(io:) must route the accepted connection's capabilities through the explicitly supplied IO, not the listener's own IO.Kernel."
         )
     }
 }
@@ -92,9 +92,9 @@ extension ReadMarker {
 }
 
 private func markedIO(
-    wrapping inner: IO<Sockets.Capabilities>,
+    wrapping inner: IO.Kernel<Sockets.Capabilities>,
     marker: ReadMarker
-) -> IO<Sockets.Capabilities> {
+) -> IO.Kernel<Sockets.Capabilities> {
     let capabilities = Sockets.Capabilities(
         prepare: inner.capabilities.prepare,
         read: { fd, buffer throws(Sockets.Error) -> Int in
@@ -108,5 +108,5 @@ private func markedIO(
         send: inner.capabilities.send,
         receive: inner.capabilities.receive
     )
-    return IO(capabilities: capabilities, runner: inner.runner)
+    return IO.Kernel(capabilities: capabilities, runner: inner.runner)
 }

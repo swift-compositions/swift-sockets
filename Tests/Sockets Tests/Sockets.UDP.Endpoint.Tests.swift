@@ -1,4 +1,4 @@
-import IO
+import IO_Kernel
 import Kernel
 import Sockets
 import Span_Raw
@@ -19,8 +19,8 @@ extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-tr
 
     @Test
     func `IPv4 datagram round-trips client to server and back to peer`() async throws {
-        let serverIO = IO<Sockets.Capabilities>.blocking()
-        let clientIO = IO<Sockets.Capabilities>.blocking()
+        let serverIO = IO.Kernel<Sockets.Capabilities>.blocking()
+        let clientIO = IO.Kernel<Sockets.Capabilities>.blocking()
         let server = try Sockets.UDP.Endpoint.bound(
             to: Kernel.Socket.Address.IPv4.loopback(port: 0),
             io: serverIO
@@ -74,8 +74,8 @@ extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-tr
 
     @Test
     func `IPv6 datagram round-trips client to server and back to peer over ::1`() async throws {
-        let serverIO = IO<Sockets.Capabilities>.blocking()
-        let clientIO = IO<Sockets.Capabilities>.blocking()
+        let serverIO = IO.Kernel<Sockets.Capabilities>.blocking()
+        let clientIO = IO.Kernel<Sockets.Capabilities>.blocking()
         let server = try Sockets.UDP.Endpoint.bound(
             to: Kernel.Socket.Address.IPv6.loopback(port: 0),
             io: serverIO

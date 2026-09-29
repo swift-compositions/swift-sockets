@@ -1,4 +1,4 @@
-public import IO
+public import IO_Kernel
 public import Kernel
 public import Span_Raw
 
@@ -8,11 +8,11 @@ extension Sockets.UDP {
 
         public let descriptor: Kernel.Descriptor
 
-        public let io: IO<Sockets.Capabilities>
+        public let io: IO.Kernel<Sockets.Capabilities>
 
         internal init(
             descriptor: consuming Kernel.Descriptor,
-            io: IO<Sockets.Capabilities>
+            io: IO.Kernel<Sockets.Capabilities>
         ) {
             self.descriptor = descriptor
             self.io = io
@@ -24,7 +24,7 @@ extension Sockets.UDP.Endpoint {
 
     public static func bound(
         to address: Kernel.Socket.Address.IPv4,
-        io: IO<Sockets.Capabilities>
+        io: IO.Kernel<Sockets.Capabilities>
     ) throws(Sockets.Error) -> Sockets.UDP.Endpoint {
         let fd = try createBind(address: address)
         try io.prepare(fd)
@@ -33,7 +33,7 @@ extension Sockets.UDP.Endpoint {
 
     public static func bound(
         to address: Kernel.Socket.Address.IPv6,
-        io: IO<Sockets.Capabilities>
+        io: IO.Kernel<Sockets.Capabilities>
     ) throws(Sockets.Error) -> Sockets.UDP.Endpoint {
         let fd = try createBind(address: address)
         try io.prepare(fd)

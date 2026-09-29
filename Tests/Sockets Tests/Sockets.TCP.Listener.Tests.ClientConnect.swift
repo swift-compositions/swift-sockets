@@ -1,4 +1,4 @@
-import IO
+import IO_Kernel
 import Kernel
 import Sockets
 import Span_Raw
@@ -65,7 +65,7 @@ private func serverSideEcho(listener: Sockets.TCP.Listener) async throws -> [UIn
 }
 
 private func clientConnectRoundTrip(
-    io: IO<Sockets.Capabilities>,
+    io: IO.Kernel<Sockets.Capabilities>,
     port: UInt16,
     payload: [UInt8]
 ) async throws -> [UInt8] {
