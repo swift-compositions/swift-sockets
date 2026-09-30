@@ -74,7 +74,7 @@ private func serverSideEcho(listener: Sockets.TCP.Listener) async throws -> [UIn
     )
     defer { unsafe buffer.deallocate() }
 
-    let readCount = try await connection.read(
+    let readCount = unsafe try await connection.read(
         into: unsafe .init(buffer)
     )
 
@@ -82,7 +82,7 @@ private func serverSideEcho(listener: Sockets.TCP.Listener) async throws -> [UIn
         start: buffer.baseAddress,
         count: readCount
     )
-    _ = try await connection.write(from: unsafe .init(payloadSlice))
+    _ = unsafe try await connection.write(from: unsafe .init(payloadSlice))
 
     await connection.close()
 
@@ -113,14 +113,14 @@ private func clientSideRoundTrip(
         unsafe writePtr[i] = byte
     }
     let writeBuffer: Span.Raw = unsafe .init(UnsafeRawBufferPointer(writePtr))
-    _ = try await io.write(to: descriptor, from: writeBuffer)
+    _ = unsafe try await io.write(to: descriptor, from: writeBuffer)
 
     let readPtr = UnsafeMutableRawBufferPointer.allocate(
         byteCount: 1024,
         alignment: 1
     )
     defer { unsafe readPtr.deallocate() }
-    let readCount = try await io.read(
+    let readCount = unsafe try await io.read(
         from: descriptor,
         into: unsafe .init(readPtr)
     )

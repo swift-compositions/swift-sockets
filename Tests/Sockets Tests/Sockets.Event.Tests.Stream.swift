@@ -47,7 +47,7 @@ extension Sockets.Event.Tests {
 
                     var received = 0
                     while received < count {
-                        let read = try await connection.read(into: unsafe .init(buffer))
+                        let read = unsafe try await connection.read(into: unsafe .init(buffer))
                         #expect(read > 0)
                         (0..<read).forEach { index in
                             #expect(
@@ -57,7 +57,7 @@ extension Sockets.Event.Tests {
                         received += read
                     }
 
-                    let eof = try await connection.read(into: unsafe .init(buffer))
+                    let eof = unsafe try await connection.read(into: unsafe .init(buffer))
                     #expect(eof == 0)
                     #expect(received == count)
                     await connection.close()
@@ -93,7 +93,7 @@ extension Sockets.Event.Tests {
                         unsafe buffer[index] = UInt8(truncatingIfNeeded: index)
                     }
 
-                    let first = try await connection.write(
+                    let first = unsafe try await connection.write(
                         from: unsafe .init(UnsafeRawBufferPointer(buffer))
                     )
                     #expect(first > 0)
@@ -109,7 +109,7 @@ extension Sockets.Event.Tests {
                             start: buffer.baseAddress!.advanced(by: written),
                             count: count - written
                         )
-                        let next = try await connection.write(from: unsafe .init(remaining))
+                        let next = unsafe try await connection.write(from: unsafe .init(remaining))
                         #expect(next > 0)
                         written += next
                     }
@@ -177,14 +177,14 @@ extension Sockets.Event.Tests {
                             start: buffer.baseAddress!.advanced(by: read),
                             count: payload.count - read
                         )
-                        let next = try await connection.read(into: unsafe .init(remaining))
+                        let next = unsafe try await connection.read(into: unsafe .init(remaining))
                         #expect(next > 0)
                         read += next
                     }
-                    let eof = try await connection.read(into: unsafe .init(buffer))
+                    let eof = unsafe try await connection.read(into: unsafe .init(buffer))
                     #expect(eof == 0)
 
-                    let echoed = try await connection.write(
+                    let echoed = unsafe try await connection.write(
                         from: unsafe .init(
                             UnsafeRawBufferPointer(start: buffer.baseAddress, count: read)
                         )
@@ -212,7 +212,7 @@ extension Sockets.Event.Tests {
                     for (index, byte) in payload.enumerated() {
                         unsafe write[index] = byte
                     }
-                    let written = try await connection.write(
+                    let written = unsafe try await connection.write(
                         from: unsafe .init(UnsafeRawBufferPointer(write))
                     )
                     #expect(written == payload.count)
@@ -226,14 +226,14 @@ extension Sockets.Event.Tests {
                             start: read.baseAddress!.advanced(by: echoed),
                             count: payload.count - echoed
                         )
-                        let next = try await connection.read(into: unsafe .init(remaining))
+                        let next = unsafe try await connection.read(into: unsafe .init(remaining))
                         #expect(next > 0)
                         echoed += next
                     }
                     payload.indices.forEach { index in
                         #expect(unsafe read[index] == payload[index])
                     }
-                    let eof = try await connection.read(into: unsafe .init(read))
+                    let eof = unsafe try await connection.read(into: unsafe .init(read))
                     #expect(eof == 0)
                     await connection.close()
                     return nil

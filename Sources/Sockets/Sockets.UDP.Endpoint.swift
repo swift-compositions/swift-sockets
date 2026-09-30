@@ -72,21 +72,21 @@ extension Sockets.UDP.Endpoint {
         to peer: Kernel.Socket.Address.Storage,
         length: Kernel.Socket.Address.Length
     ) async throws(Sockets.Error) -> Int {
-        try await io.send(on: descriptor, from: buffer, to: peer, length: length)
+        unsafe try await io.send(on: descriptor, from: buffer, to: peer, length: length)
     }
 
     public borrowing func send(
         _ buffer: Span.Raw,
         to address: Kernel.Socket.Address.IPv4
     ) async throws(Sockets.Error) -> Int {
-        try await send(buffer, to: address.storage, length: Kernel.Socket.Address.IPv4.size)
+        unsafe try await send(buffer, to: address.storage, length: Kernel.Socket.Address.IPv4.size)
     }
 
     public borrowing func send(
         _ buffer: Span.Raw,
         to address: Kernel.Socket.Address.IPv6
     ) async throws(Sockets.Error) -> Int {
-        try await send(buffer, to: address.storage, length: Kernel.Socket.Address.IPv6.size)
+        unsafe try await send(buffer, to: address.storage, length: Kernel.Socket.Address.IPv6.size)
     }
 
     public borrowing func receive(
@@ -94,7 +94,7 @@ extension Sockets.UDP.Endpoint {
     ) async throws(Sockets.Error) -> (
         count: Int, peer: Kernel.Socket.Address.Storage, length: Kernel.Socket.Address.Length
     ) {
-        try await io.receive(on: descriptor, into: buffer)
+        unsafe try await io.receive(on: descriptor, into: buffer)
     }
 
     public consuming func close() async {

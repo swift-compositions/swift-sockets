@@ -10,13 +10,13 @@ extension IO where Capabilities == Sockets.Capabilities {
 
     public static func blocking(on executor: Kernel::Kernel.Thread.Executor) -> IO<Sockets.Capabilities> {
         let actor = Kernel::Kernel.Thread.Actor(executor: executor)
-        let capabilities = Sockets.Capabilities(
+        let capabilities = unsafe Sockets.Capabilities(
             prepare: { _ throws(Sockets.Error) in },
             read: { fd, buffer throws(Sockets.Error) -> Int in
-                try await actor.read(from: fd, into: buffer)
+                unsafe try await actor.read(from: fd, into: buffer)
             },
             write: { fd, buffer throws(Sockets.Error) -> Int in
-                try await actor.write(to: fd, from: buffer)
+                unsafe try await actor.write(to: fd, from: buffer)
             },
             close: { fd in
                 await actor.close(consume fd)
@@ -28,10 +28,10 @@ extension IO where Capabilities == Sockets.Capabilities {
                 try await actor.connect(fd, to: address, length: length)
             },
             send: { fd, buffer, address, length throws(Sockets.Error) -> Int in
-                try await actor.send(on: fd, from: buffer, to: address, length: length)
+                unsafe try await actor.send(on: fd, from: buffer, to: address, length: length)
             },
             receive: { fd, buffer throws(Sockets.Error) in
-                try await actor.receive(on: fd, into: buffer)
+                unsafe try await actor.receive(on: fd, into: buffer)
             }
         )
         let runner = unsafe Self.Runner(

@@ -126,7 +126,7 @@ extension Sockets.Event.Tests {
                     let connection = try await listener.accept(io: io)
                     let buffer = UnsafeMutableRawBufferPointer.allocate(byteCount: 1, alignment: 1)
                     defer { unsafe buffer.deallocate() }
-                    let eof = try await connection.read(into: unsafe .init(buffer))
+                    let eof = unsafe try await connection.read(into: unsafe .init(buffer))
                     #expect(eof == 0, "Closing after cancelled read must deliver EOF to the peer.")
                     await connection.close()
                     return nil
@@ -146,7 +146,7 @@ extension Sockets.Event.Tests {
 
                     unsafe withUnsafeCurrentTask { task in unsafe task?.cancel() }
                     do throws(Sockets.Error) {
-                        _ = try await connection.read(into: unsafe .init(buffer))
+                        _ = unsafe try await connection.read(into: unsafe .init(buffer))
                         Issue.record("Cancelled event read must not remain enlisted.")
                     } catch {
                         #expect(error == .cancelled)
@@ -204,7 +204,7 @@ extension Sockets.Event.Tests {
                     let connection = try await listener.accept(io: io)
                     let buffer = UnsafeMutableRawBufferPointer.allocate(byteCount: 1, alignment: 1)
                     defer { unsafe buffer.deallocate() }
-                    let eof = try await connection.read(into: unsafe .init(buffer))
+                    let eof = unsafe try await connection.read(into: unsafe .init(buffer))
                     #expect(eof == 0)
                     await connection.close()
                     return nil
@@ -227,7 +227,7 @@ extension Sockets.Event.Tests {
                         defer { unsafe buffer.deallocate() }
                         await started.open()
                         do throws(Sockets.Error) {
-                            _ = try await connection.read(into: unsafe .init(buffer))
+                            _ = unsafe try await connection.read(into: unsafe .init(buffer))
                             await connection.close()
                             return nil
                         } catch {

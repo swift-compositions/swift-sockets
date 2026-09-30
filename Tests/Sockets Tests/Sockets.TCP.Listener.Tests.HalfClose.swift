@@ -31,14 +31,14 @@ extension Sockets.TCP.Listener.Tests.`Half Close` {
                 let buf = UnsafeMutableRawBufferPointer.allocate(byteCount: 1024, alignment: 1)
                 defer { unsafe buf.deallocate() }
 
-                let n = try await conn.read(into: unsafe .init(buf))
+                let n = unsafe try await conn.read(into: unsafe .init(buf))
                 #expect(n == payload.count, "Server read the full payload before EOF.")
 
-                let eof = try await conn.read(into: unsafe .init(buf))
+                let eof = unsafe try await conn.read(into: unsafe .init(buf))
                 #expect(eof == 0, "Server sees EOF after client shutdown(.write).")
 
                 let echo = unsafe UnsafeRawBufferPointer(start: buf.baseAddress, count: n)
-                _ = try await conn.write(from: unsafe .init(echo))
+                _ = unsafe try await conn.write(from: unsafe .init(echo))
 
                 try conn.shutdown(how: .write)
 
@@ -58,7 +58,7 @@ extension Sockets.TCP.Listener.Tests.`Half Close` {
                 )
                 defer { unsafe wbuf.deallocate() }
                 for (i, b) in payload.enumerated() { unsafe wbuf[i] = b }
-                _ = try await clientIO.write(
+                _ = unsafe try await clientIO.write(
                     to: descriptor,
                     from: unsafe .init(UnsafeRawBufferPointer(wbuf))
                 )
@@ -67,7 +67,7 @@ extension Sockets.TCP.Listener.Tests.`Half Close` {
 
                 let rbuf = UnsafeMutableRawBufferPointer.allocate(byteCount: 1024, alignment: 1)
                 defer { unsafe rbuf.deallocate() }
-                let n = try await clientIO.read(from: descriptor, into: unsafe .init(rbuf))
+                let n = unsafe try await clientIO.read(from: descriptor, into: unsafe .init(rbuf))
                 #expect(n == payload.count, "Client read the echoed payload.")
 
                 var received: [UInt8] = []
@@ -75,7 +75,7 @@ extension Sockets.TCP.Listener.Tests.`Half Close` {
                 for i in 0..<n { received.append(unsafe rbuf[i]) }
                 #expect(received == payload, "Client received its own payload echoed back.")
 
-                let eof = try await clientIO.read(from: descriptor, into: unsafe .init(rbuf))
+                let eof = unsafe try await clientIO.read(from: descriptor, into: unsafe .init(rbuf))
                 #expect(eof == 0, "Client sees EOF after server shutdown(.write).")
 
                 await clientIO.close(consume descriptor)

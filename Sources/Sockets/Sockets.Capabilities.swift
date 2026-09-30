@@ -3,6 +3,8 @@ public import Span
 
 extension Sockets {
 
+    @safe
+
     public struct Capabilities: Sendable {
 
         public let prepare: @Sendable (borrowing Kernel.Descriptor) throws(Sockets.Error) -> Void
@@ -97,13 +99,13 @@ extension Sockets {
                 )
         ) {
             self.prepare = prepare
-            self.read = read
-            self.write = write
+            unsafe self.read = unsafe read
+            unsafe self.write = unsafe write
             self.close = close
             self.ready = ready
             self.connect = connect
-            self.send = send
-            self.receive = receive
+            unsafe self.send = unsafe send
+            unsafe self.receive = unsafe receive
         }
     }
 }

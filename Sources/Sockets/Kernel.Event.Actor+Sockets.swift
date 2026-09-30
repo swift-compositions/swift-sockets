@@ -59,7 +59,7 @@ extension Kernel.Event.Actor {
         let registration = try register(descriptor)
         while true {
             do throws(Kernel.Socket.Error) {
-                return try POSIX.Kernel.Socket.Send.to(
+                return unsafe try POSIX.Kernel.Socket.Send.to(
                     descriptor,
                     from: buffer.span,
                     address: address,
@@ -83,8 +83,8 @@ extension Kernel.Event.Actor {
     ) {
         let registration = try register(descriptor)
         while true {
-            var buffer = buffer
-            var span = buffer.mutableSpan
+            var buffer = unsafe buffer
+            var span = unsafe buffer.mutableSpan
             do throws(Kernel.Socket.Error) {
                 let result = try POSIX.Kernel.Socket.Receive.from(
                     descriptor,

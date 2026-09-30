@@ -53,7 +53,7 @@ extension Kernel.Thread.Actor {
         length: Kernel.Socket.Address.Length
     ) throws(Sockets.Error) -> Int {
         do throws(Kernel.Socket.Error) {
-            return try POSIX.Kernel.Socket.Send.to(
+            return unsafe try POSIX.Kernel.Socket.Send.to(
                 descriptor,
                 from: buffer.span,
                 address: address,
@@ -70,8 +70,8 @@ extension Kernel.Thread.Actor {
     ) throws(Sockets.Error) -> (
         count: Int, peer: Kernel.Socket.Address.Storage, length: Kernel.Socket.Address.Length
     ) {
-        var buffer = buffer
-        var span = buffer.mutableSpan
+        var buffer = unsafe buffer
+        var span = unsafe buffer.mutableSpan
         do throws(Kernel.Socket.Error) {
             let result = try POSIX.Kernel.Socket.Receive.from(descriptor, into: &span)
             return (count: result.count, peer: result.address, length: result.addressLength)

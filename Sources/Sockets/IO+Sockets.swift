@@ -16,7 +16,7 @@ extension IO where Capabilities == Sockets.Capabilities {
         from fd: borrowing Kernel::Kernel.Descriptor,
         into buffer: Span.Raw.Mutable
     ) async throws(Sockets.Error) -> Int {
-        try await capabilities.read(fd, buffer)
+        unsafe try await capabilities.read(fd, buffer)
     }
 
     @inlinable
@@ -24,7 +24,7 @@ extension IO where Capabilities == Sockets.Capabilities {
         to fd: borrowing Kernel::Kernel.Descriptor,
         from buffer: Span.Raw
     ) async throws(Sockets.Error) -> Int {
-        try await capabilities.write(fd, buffer)
+        unsafe try await capabilities.write(fd, buffer)
     }
 
     @inlinable
@@ -56,7 +56,7 @@ extension IO where Capabilities == Sockets.Capabilities {
         to address: Kernel::Kernel.Socket.Address.Storage,
         length: Kernel::Kernel.Socket.Address.Length
     ) async throws(Sockets.Error) -> Int {
-        try await capabilities.send(fd, buffer, address, length)
+        unsafe try await capabilities.send(fd, buffer, address, length)
     }
 
     @inlinable
@@ -66,7 +66,7 @@ extension IO where Capabilities == Sockets.Capabilities {
     ) async throws(Sockets.Error) -> (
         count: Int, peer: Kernel::Kernel.Socket.Address.Storage, length: Kernel::Kernel.Socket.Address.Length
     ) {
-        try await capabilities.receive(fd, buffer)
+        unsafe try await capabilities.receive(fd, buffer)
     }
 
     @inlinable

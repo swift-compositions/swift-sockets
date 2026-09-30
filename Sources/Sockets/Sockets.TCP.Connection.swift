@@ -29,13 +29,13 @@ extension Sockets.TCP.Connection {
     public borrowing func read(
         into buffer: Span.Raw.Mutable
     ) async throws(Sockets.Error) -> Int {
-        try await io.read(from: descriptor, into: buffer)
+        unsafe try await io.read(from: descriptor, into: buffer)
     }
 
     public borrowing func write(
         from buffer: Span.Raw
     ) async throws(Sockets.Error) -> Int {
-        try await io.write(to: descriptor, from: buffer)
+        unsafe try await io.write(to: descriptor, from: buffer)
     }
 
     public consuming func close() async {

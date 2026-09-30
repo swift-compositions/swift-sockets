@@ -10,7 +10,7 @@ private let _reactiveTestExecutors: Kernel.Thread.Executor.Sharded = .init()
 
 func makeReactiveIO() -> IO<Sockets.Capabilities> {
     let actor = Kernel.Thread.Actor(executor: _reactiveTestExecutors.next())
-    let capabilities = Sockets.Capabilities(
+    let capabilities = unsafe Sockets.Capabilities(
         prepare: { fd throws(Sockets.Error) in
             do throws(Kernel.File.Control.Error) {
                 try Kernel.File.Control.setNonBlocking(fd)
@@ -22,10 +22,10 @@ func makeReactiveIO() -> IO<Sockets.Capabilities> {
             }
         },
         read: { fd, buffer throws(Sockets.Error) -> Int in
-            try await actor.testReactiveRead(from: fd, into: buffer)
+            unsafe try await actor.testReactiveRead(from: fd, into: buffer)
         },
         write: { fd, buffer throws(Sockets.Error) -> Int in
-            try await actor.testReactiveWrite(to: fd, from: buffer)
+            unsafe try await actor.testReactiveWrite(to: fd, from: buffer)
         },
         close: { fd in
             await actor.testClose(consume fd)
@@ -44,7 +44,7 @@ func makeReactiveIO() -> IO<Sockets.Capabilities> {
             )
         },
         send: { fd, buffer, address, length throws(Sockets.Error) -> Int in
-            try await actor.testReactiveSend(on: fd, from: buffer, to: address, length: length)
+            unsafe try await actor.testReactiveSend(on: fd, from: buffer, to: address, length: length)
         },
         receive: {
             fd,
@@ -52,7 +52,7 @@ func makeReactiveIO() -> IO<Sockets.Capabilities> {
                 count: Int, peer: Kernel.Socket.Address.Storage,
                 length: Kernel.Socket.Address.Length
             ) in
-            try await actor.testReactiveReceive(on: fd, into: buffer)
+            unsafe try await actor.testReactiveReceive(on: fd, into: buffer)
         }
     )
     let runner = unsafe IO<Sockets.Capabilities>.Runner(
@@ -109,7 +109,7 @@ extension Kernel.Thread.Actor {
     ) throws(Sockets.Error) -> Int {
         while true {
             do throws(Kernel.Socket.Error) {
-                return try POSIX.Kernel.Socket.Send.to(
+                return unsafe try POSIX.Kernel.Socket.Send.to(
                     descriptor,
                     from: buffer.span,
                     address: address,
@@ -130,10 +130,10 @@ extension Kernel.Thread.Actor {
     ) throws(Sockets.Error) -> (
         count: Int, peer: Kernel.Socket.Address.Storage, length: Kernel.Socket.Address.Length
     ) {
-        var buffer = buffer
+        var buffer = unsafe buffer
         while true {
             do throws(Kernel.Socket.Error) {
-                var span = buffer.mutableSpan
+                var span = unsafe buffer.mutableSpan
                 let result = try POSIX.Kernel.Socket.Receive.from(descriptor, into: &span)
                 return (count: result.count, peer: result.address, length: result.addressLength)
             } catch {

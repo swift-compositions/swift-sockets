@@ -58,7 +58,7 @@
     extension Sockets.TCP.Listener.Tests.`Blocking Idle CPU`.Measurement.Wrap {
         func listener(wrapping inner: IO<Sockets.Capabilities>) -> IO<Sockets.Capabilities> {
             let measurement = measurement
-            let capabilities = Sockets.Capabilities(
+            let capabilities = unsafe Sockets.Capabilities(
                 prepare: inner.capabilities.prepare,
                 read: inner.capabilities.read,
                 write: inner.capabilities.write,
@@ -68,26 +68,26 @@
                     measurement.record.before()
                 },
                 connect: inner.capabilities.connect,
-                send: inner.capabilities.send,
-                receive: inner.capabilities.receive
+                send: unsafe inner.capabilities.send,
+                receive: unsafe inner.capabilities.receive
             )
             return IO(capabilities: capabilities, runner: inner.runner)
         }
 
         func accepted(wrapping inner: IO<Sockets.Capabilities>) -> IO<Sockets.Capabilities> {
             let measurement = measurement
-            let capabilities = Sockets.Capabilities(
+            let capabilities = unsafe Sockets.Capabilities(
                 prepare: { fd throws(Sockets.Error) in
                     measurement.record.after()
                     try inner.prepare(fd)
                 },
-                read: inner.capabilities.read,
-                write: inner.capabilities.write,
+                read: unsafe inner.capabilities.read,
+                write: unsafe inner.capabilities.write,
                 close: inner.capabilities.close,
                 ready: inner.capabilities.ready,
                 connect: inner.capabilities.connect,
-                send: inner.capabilities.send,
-                receive: inner.capabilities.receive
+                send: unsafe inner.capabilities.send,
+                receive: unsafe inner.capabilities.receive
             )
             return IO(capabilities: capabilities, runner: inner.runner)
         }

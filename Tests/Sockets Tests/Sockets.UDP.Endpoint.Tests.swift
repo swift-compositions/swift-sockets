@@ -37,7 +37,7 @@ extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-tr
         defer { unsafe sendPtr.deallocate() }
         for (i, byte) in payload.enumerated() { unsafe sendPtr[i] = byte }
         let sendSpan: Span.Raw = unsafe .init(UnsafeRawBufferPointer(sendPtr))
-        let sent = try await client.send(
+        let sent = unsafe try await client.send(
             sendSpan,
             to: Kernel.Socket.Address.IPv4.loopback(port: serverPort)
         )
@@ -45,7 +45,7 @@ extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-tr
 
         let recvPtr = UnsafeMutableRawBufferPointer.allocate(byteCount: 1024, alignment: 1)
         defer { unsafe recvPtr.deallocate() }
-        let (received, peer, peerLength) = try await server.receive(into: unsafe .init(recvPtr))
+        let (received, peer, peerLength) = unsafe try await server.receive(into: unsafe .init(recvPtr))
         var serverBytes: [UInt8] = []
         serverBytes.reserveCapacity(received)
         for i in 0..<received { serverBytes.append(unsafe recvPtr[i]) }
@@ -54,12 +54,12 @@ extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-tr
 
         let echoSlice = unsafe UnsafeRawBufferPointer(start: recvPtr.baseAddress, count: received)
         let echoSpan: Span.Raw = unsafe .init(echoSlice)
-        let echoed = try await server.send(echoSpan, to: peer, length: peerLength)
+        let echoed = unsafe try await server.send(echoSpan, to: peer, length: peerLength)
         #expect(echoed == payload.count, "Server echoed the whole datagram.")
 
         let clientRecvPtr = UnsafeMutableRawBufferPointer.allocate(byteCount: 1024, alignment: 1)
         defer { unsafe clientRecvPtr.deallocate() }
-        let (echoCount, _, _) = try await client.receive(into: unsafe .init(clientRecvPtr))
+        let (echoCount, _, _) = unsafe try await client.receive(into: unsafe .init(clientRecvPtr))
         var clientBytes: [UInt8] = []
         clientBytes.reserveCapacity(echoCount)
         for i in 0..<echoCount { clientBytes.append(unsafe clientRecvPtr[i]) }
@@ -92,7 +92,7 @@ extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-tr
         defer { unsafe sendPtr.deallocate() }
         for (i, byte) in payload.enumerated() { unsafe sendPtr[i] = byte }
         let sendSpan: Span.Raw = unsafe .init(UnsafeRawBufferPointer(sendPtr))
-        let sent = try await client.send(
+        let sent = unsafe try await client.send(
             sendSpan,
             to: Kernel.Socket.Address.IPv6.loopback(port: serverPort)
         )
@@ -100,7 +100,7 @@ extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-tr
 
         let recvPtr = UnsafeMutableRawBufferPointer.allocate(byteCount: 1024, alignment: 1)
         defer { unsafe recvPtr.deallocate() }
-        let (received, peer, peerLength) = try await server.receive(into: unsafe .init(recvPtr))
+        let (received, peer, peerLength) = unsafe try await server.receive(into: unsafe .init(recvPtr))
         var serverBytes: [UInt8] = []
         serverBytes.reserveCapacity(received)
         for i in 0..<received { serverBytes.append(unsafe recvPtr[i]) }
@@ -109,12 +109,12 @@ extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-tr
 
         let echoSlice = unsafe UnsafeRawBufferPointer(start: recvPtr.baseAddress, count: received)
         let echoSpan: Span.Raw = unsafe .init(echoSlice)
-        let echoed = try await server.send(echoSpan, to: peer, length: peerLength)
+        let echoed = unsafe try await server.send(echoSpan, to: peer, length: peerLength)
         #expect(echoed == payload.count, "Server echoed the whole datagram.")
 
         let clientRecvPtr = UnsafeMutableRawBufferPointer.allocate(byteCount: 1024, alignment: 1)
         defer { unsafe clientRecvPtr.deallocate() }
-        let (echoCount, _, _) = try await client.receive(into: unsafe .init(clientRecvPtr))
+        let (echoCount, _, _) = unsafe try await client.receive(into: unsafe .init(clientRecvPtr))
         var clientBytes: [UInt8] = []
         clientBytes.reserveCapacity(echoCount)
         for i in 0..<echoCount { clientBytes.append(unsafe clientRecvPtr[i]) }

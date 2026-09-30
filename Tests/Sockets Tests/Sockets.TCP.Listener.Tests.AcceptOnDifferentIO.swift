@@ -47,7 +47,7 @@ extension Sockets.TCP.Listener.Tests.`Accept On Different IO` {
                 let buffer = UnsafeMutableRawBufferPointer.allocate(byteCount: 1024, alignment: 1)
                 defer { unsafe buffer.deallocate() }
 
-                _ = try await connection.read(into: unsafe .init(buffer))
+                _ = unsafe try await connection.read(into: unsafe .init(buffer))
                 await connection.close()
             }
 
@@ -66,7 +66,7 @@ extension Sockets.TCP.Listener.Tests.`Accept On Different IO` {
                 )
                 defer { unsafe writeBuffer.deallocate() }
                 for (i, byte) in payload.enumerated() { unsafe writeBuffer[i] = byte }
-                _ = try await clientIO.write(
+                _ = unsafe try await clientIO.write(
                     to: descriptor,
                     from: unsafe .init(UnsafeRawBufferPointer(writeBuffer))
                 )
@@ -95,18 +95,18 @@ private func markedIO(
     wrapping inner: IO<Sockets.Capabilities>,
     marker: ReadMarker
 ) -> IO<Sockets.Capabilities> {
-    let capabilities = Sockets.Capabilities(
+    let capabilities = unsafe Sockets.Capabilities(
         prepare: inner.capabilities.prepare,
         read: { fd, buffer throws(Sockets.Error) -> Int in
             await marker.hit()
-            return try await inner.capabilities.read(fd, buffer)
+            return unsafe try await inner.capabilities.read(fd, buffer)
         },
-        write: inner.capabilities.write,
+        write: unsafe inner.capabilities.write,
         close: inner.capabilities.close,
         ready: inner.capabilities.ready,
         connect: inner.capabilities.connect,
-        send: inner.capabilities.send,
-        receive: inner.capabilities.receive
+        send: unsafe inner.capabilities.send,
+        receive: unsafe inner.capabilities.receive
     )
     return IO(capabilities: capabilities, runner: inner.runner)
 }

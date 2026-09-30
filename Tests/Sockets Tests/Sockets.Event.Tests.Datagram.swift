@@ -37,7 +37,7 @@ extension Sockets.Event.Tests {
             for (index, byte) in payload.enumerated() {
                 unsafe send[index] = byte
             }
-            let sent = try await client.send(
+            let sent = unsafe try await client.send(
                 unsafe .init(UnsafeRawBufferPointer(send)),
                 to: Kernel.Socket.Address.IPv4.loopback(port: serverPort)
             )
@@ -45,7 +45,7 @@ extension Sockets.Event.Tests {
 
             let receive = UnsafeMutableRawBufferPointer.allocate(byteCount: 64, alignment: 1)
             defer { unsafe receive.deallocate() }
-            let result = try await server.receive(into: unsafe .init(receive))
+            let result = unsafe try await server.receive(into: unsafe .init(receive))
             #expect(result.count == payload.count)
             #expect(result.peer.family == .inet)
             #expect(result.peer._port == clientPort)
