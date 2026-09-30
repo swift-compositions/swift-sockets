@@ -8,7 +8,7 @@ import Testing
 extension Sockets.Event.Tests {
     @Test
     func `event UDP preserves payload and exact sender identity`() async {
-        let io: IO.Kernel<Sockets.Capabilities>
+        let io: IO<Sockets.Capabilities>
         do throws(Kernel.Event.Failure) {
             io = try .events()
         } catch {

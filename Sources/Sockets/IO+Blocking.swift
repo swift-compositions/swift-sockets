@@ -2,13 +2,13 @@ public import Executors
 public import IO_Kernel
 internal import Thread_Actor
 
-extension IO.Kernel where Capabilities == Sockets.Capabilities {
+extension IO where Capabilities == Sockets.Capabilities {
 
-    public static func blocking() -> IO.Kernel<Sockets.Capabilities> {
+    public static func blocking() -> IO<Sockets.Capabilities> {
         blocking(on: _sharedExecutors.next())
     }
 
-    public static func blocking(on executor: Kernel::Kernel.Thread.Executor) -> IO.Kernel<Sockets.Capabilities> {
+    public static func blocking(on executor: Kernel::Kernel.Thread.Executor) -> IO<Sockets.Capabilities> {
         let actor = Kernel::Kernel.Thread.Actor(executor: executor)
         let capabilities = Sockets.Capabilities(
             prepare: { _ throws(Sockets.Error) in },
@@ -40,7 +40,7 @@ extension IO.Kernel where Capabilities == Sockets.Capabilities {
 
             }
         )
-        return IO.Kernel(capabilities: capabilities, runner: runner)
+        return IO(capabilities: capabilities, runner: runner)
     }
 }
 

@@ -18,7 +18,7 @@ extension Sockets.TCP.Listener.Tests.`Half Close` {
         strategy: Sockets.TCP.Listener.Tests.Strategy
     ) async throws {
         let (_, listener) = try await Sockets.TCP.Listener.Tests.Strategy.makeServer(strategy)
-        let clientIO = IO.Kernel<Sockets.Capabilities>.blocking()
+        let clientIO = IO<Sockets.Capabilities>.blocking()
         let port = try await listener.port()
 
         let payload: [UInt8] = [0x48, 0x41, 0x4C, 0x46]

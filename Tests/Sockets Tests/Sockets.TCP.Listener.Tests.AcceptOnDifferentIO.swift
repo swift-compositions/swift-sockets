@@ -27,7 +27,7 @@ extension Sockets.TCP.Listener.Tests.`Accept On Different IO` {
             clientExecutor.shutdown()
         }
 
-        let listenerIO = IO.Kernel<Sockets.Capabilities>.blocking(on: listenerExecutor)
+        let listenerIO = IO<Sockets.Capabilities>.blocking(on: listenerExecutor)
         let listener = try Sockets.TCP.Listener.blocking(
             address: Kernel.Socket.Address.IPv4.loopback(port: 0),
             io: listenerIO
@@ -58,7 +58,7 @@ extension Sockets.TCP.Listener.Tests.`Accept On Different IO` {
                     address: Kernel.Socket.Address.IPv4.loopback(port: port)
                 )
                 let descriptor = consume socket
-                let clientIO = IO.Kernel<Sockets.Capabilities>.blocking(on: clientExecutor)
+                let clientIO = IO<Sockets.Capabilities>.blocking(on: clientExecutor)
 
                 let writeBuffer = UnsafeMutableRawBufferPointer.allocate(
                     byteCount: payload.count,
@@ -92,9 +92,9 @@ extension ReadMarker {
 }
 
 private func markedIO(
-    wrapping inner: IO.Kernel<Sockets.Capabilities>,
+    wrapping inner: IO<Sockets.Capabilities>,
     marker: ReadMarker
-) -> IO.Kernel<Sockets.Capabilities> {
+) -> IO<Sockets.Capabilities> {
     let capabilities = Sockets.Capabilities(
         prepare: inner.capabilities.prepare,
         read: { fd, buffer throws(Sockets.Error) -> Int in
@@ -108,5 +108,5 @@ private func markedIO(
         send: inner.capabilities.send,
         receive: inner.capabilities.receive
     )
-    return IO.Kernel(capabilities: capabilities, runner: inner.runner)
+    return IO(capabilities: capabilities, runner: inner.runner)
 }

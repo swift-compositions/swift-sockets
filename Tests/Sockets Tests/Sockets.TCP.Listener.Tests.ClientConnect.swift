@@ -65,7 +65,7 @@ private func serverSideEcho(listener: Sockets.TCP.Listener) async throws -> [UIn
 }
 
 private func clientConnectRoundTrip(
-    io: IO.Kernel<Sockets.Capabilities>,
+    io: IO<Sockets.Capabilities>,
     port: UInt16,
     payload: [UInt8]
 ) async throws -> [UInt8] {

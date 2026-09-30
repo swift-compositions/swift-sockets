@@ -7,7 +7,7 @@ import Testing
 extension Sockets.Event.Tests {
     @Test
     func `owned shutdown is idempotent rejects new work and still closes descriptors`() async {
-        let io: IO.Kernel<Sockets.Capabilities>
+        let io: IO<Sockets.Capabilities>
         do throws(Kernel.Event.Failure) {
             io = try .events()
         } catch {
@@ -106,7 +106,7 @@ extension Sockets.Event.Tests {
             Issue.record("Caller-owned actor unavailable: \(error)")
             return
         }
-        let io = IO.Kernel<Sockets.Capabilities>.events(on: actor)
+        let io = IO<Sockets.Capabilities>.events(on: actor)
         let descriptor: Kernel.Socket.Descriptor
         do throws(Kernel.Socket.Error) {
             descriptor = try Kernel.Socket.Create.create(domain: .inet, kind: .stream)

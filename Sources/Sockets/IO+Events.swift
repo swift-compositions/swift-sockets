@@ -20,11 +20,11 @@ extension Sockets.Event {
     }
 }
 
-extension IO.Kernel where Capabilities == Sockets.Capabilities {
+extension IO where Capabilities == Sockets.Capabilities {
 
     public static func events(
         on actor: Kernel::Kernel.Event.Actor
-    ) -> IO.Kernel<Sockets.Capabilities> {
+    ) -> IO<Sockets.Capabilities> {
         let capabilities = Sockets.Capabilities(
             prepare: { descriptor throws(Sockets.Error) in
                 try Sockets.Event.prepare(descriptor)
@@ -93,10 +93,10 @@ extension IO.Kernel where Capabilities == Sockets.Capabilities {
 
             }
         )
-        return IO.Kernel(capabilities: capabilities, runner: runner)
+        return IO(capabilities: capabilities, runner: runner)
     }
 
-    public static func events() throws(Kernel::Kernel.Event.Failure) -> IO.Kernel<Sockets.Capabilities> {
+    public static func events() throws(Kernel::Kernel.Event.Failure) -> IO<Sockets.Capabilities> {
         let actor = try Kernel::Kernel.Event.Actor()
         let owner = Sockets.Event.Owner(actor)
         let capabilities = Sockets.Capabilities(
@@ -178,6 +178,6 @@ extension IO.Kernel where Capabilities == Sockets.Capabilities {
                 await owner.shutdown()
             }
         )
-        return IO.Kernel(capabilities: capabilities, runner: runner)
+        return IO(capabilities: capabilities, runner: runner)
     }
 }

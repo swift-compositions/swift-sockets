@@ -8,11 +8,11 @@ extension Sockets.UDP {
 
         public let descriptor: Kernel.Descriptor
 
-        public let io: IO.Kernel<Sockets.Capabilities>
+        public let io: IO<Sockets.Capabilities>
 
         internal init(
             descriptor: consuming Kernel.Descriptor,
-            io: IO.Kernel<Sockets.Capabilities>
+            io: IO<Sockets.Capabilities>
         ) {
             self.descriptor = descriptor
             self.io = io
@@ -24,7 +24,7 @@ extension Sockets.UDP.Endpoint {
 
     public static func bound(
         to address: Kernel.Socket.Address.IPv4,
-        io: IO.Kernel<Sockets.Capabilities>
+        io: IO<Sockets.Capabilities>
     ) throws(Sockets.Error) -> Sockets.UDP.Endpoint {
         let fd = try createBind(address: address)
         try io.prepare(fd)
@@ -33,7 +33,7 @@ extension Sockets.UDP.Endpoint {
 
     public static func bound(
         to address: Kernel.Socket.Address.IPv6,
-        io: IO.Kernel<Sockets.Capabilities>
+        io: IO<Sockets.Capabilities>
     ) throws(Sockets.Error) -> Sockets.UDP.Endpoint {
         let fd = try createBind(address: address)
         try io.prepare(fd)

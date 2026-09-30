@@ -2,7 +2,7 @@ public import IO_Kernel
 public import Kernel
 public import Span
 
-extension IO.Kernel where Capabilities == Sockets.Capabilities {
+extension IO where Capabilities == Sockets.Capabilities {
 
     @inlinable
     public func prepare(

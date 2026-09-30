@@ -7,9 +7,9 @@ extension Sockets.TCP {
 
         internal let _fd: Kernel.Descriptor
 
-        internal let _io: IO.Kernel<Sockets.Capabilities>
+        internal let _io: IO<Sockets.Capabilities>
 
-        internal init(fd: consuming Kernel.Descriptor, io: IO.Kernel<Sockets.Capabilities>) {
+        internal init(fd: consuming Kernel.Descriptor, io: IO<Sockets.Capabilities>) {
             self._fd = fd
             self._io = io
         }
@@ -27,7 +27,7 @@ extension Sockets.TCP.Listener {
 
     public static func blocking(
         address: Kernel.Socket.Address.IPv4,
-        io: IO.Kernel<Sockets.Capabilities>,
+        io: IO<Sockets.Capabilities>,
         backlog: Kernel.Socket.Backlog = .max
     ) throws(Sockets.Error) -> Sockets.TCP.Listener {
         let fd = try createBindListen(address: address, backlog: backlog)
@@ -37,7 +37,7 @@ extension Sockets.TCP.Listener {
 
     public static func blocking(
         address: Kernel.Socket.Address.IPv6,
-        io: IO.Kernel<Sockets.Capabilities>,
+        io: IO<Sockets.Capabilities>,
         backlog: Kernel.Socket.Backlog = .max
     ) throws(Sockets.Error) -> Sockets.TCP.Listener {
         let fd = try createBindListen(address: address, backlog: backlog)
@@ -47,7 +47,7 @@ extension Sockets.TCP.Listener {
 
     public static func reactive(
         address: Kernel.Socket.Address.IPv4,
-        io: IO.Kernel<Sockets.Capabilities>,
+        io: IO<Sockets.Capabilities>,
         backlog: Kernel.Socket.Backlog = .max
     ) throws(Sockets.Error) -> Sockets.TCP.Listener {
         let fd = try createBindListen(address: address, backlog: backlog)
@@ -57,7 +57,7 @@ extension Sockets.TCP.Listener {
 
     public static func reactive(
         address: Kernel.Socket.Address.IPv6,
-        io: IO.Kernel<Sockets.Capabilities>,
+        io: IO<Sockets.Capabilities>,
         backlog: Kernel.Socket.Backlog = .max
     ) throws(Sockets.Error) -> Sockets.TCP.Listener {
         let fd = try createBindListen(address: address, backlog: backlog)
@@ -101,7 +101,7 @@ extension Sockets.TCP.Listener {
     }
 
     public func accept(
-        io: IO.Kernel<Sockets.Capabilities>
+        io: IO<Sockets.Capabilities>
     ) async throws(Sockets.Error) -> Sockets.TCP.Connection {
         while true {
             try await _io.ready(from: _fd, interest: .read)

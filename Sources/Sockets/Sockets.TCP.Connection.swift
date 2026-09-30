@@ -10,12 +10,12 @@ extension Sockets.TCP {
 
         public let peer: Kernel.Socket.Address.Storage
 
-        public let io: IO.Kernel<Sockets.Capabilities>
+        public let io: IO<Sockets.Capabilities>
 
         internal init(
             descriptor: consuming Kernel.Descriptor,
             peer: Kernel.Socket.Address.Storage,
-            io: IO.Kernel<Sockets.Capabilities>
+            io: IO<Sockets.Capabilities>
         ) {
             self.descriptor = descriptor
             self.peer = peer

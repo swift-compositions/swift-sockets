@@ -5,7 +5,7 @@ extension Sockets.TCP.Connection {
 
     public static func connect(
         to address: Kernel.Socket.Address.IPv4,
-        io: IO.Kernel<Sockets.Capabilities>
+        io: IO<Sockets.Capabilities>
     ) async throws(Sockets.Error) -> sending Sockets.TCP.Connection {
         let socket: Kernel.Descriptor
         do throws(Kernel.Socket.Error) {
@@ -20,7 +20,7 @@ extension Sockets.TCP.Connection {
 
     public static func connect(
         to address: Kernel.Socket.Address.IPv6,
-        io: IO.Kernel<Sockets.Capabilities>
+        io: IO<Sockets.Capabilities>
     ) async throws(Sockets.Error) -> sending Sockets.TCP.Connection {
         let socket: Kernel.Descriptor
         do throws(Kernel.Socket.Error) {

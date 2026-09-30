@@ -56,7 +56,7 @@
     }
 
     extension Sockets.TCP.Listener.Tests.`Blocking Idle CPU`.Measurement.Wrap {
-        func listener(wrapping inner: IO.Kernel<Sockets.Capabilities>) -> IO.Kernel<Sockets.Capabilities> {
+        func listener(wrapping inner: IO<Sockets.Capabilities>) -> IO<Sockets.Capabilities> {
             let measurement = measurement
             let capabilities = Sockets.Capabilities(
                 prepare: inner.capabilities.prepare,
@@ -71,10 +71,10 @@
                 send: inner.capabilities.send,
                 receive: inner.capabilities.receive
             )
-            return IO.Kernel(capabilities: capabilities, runner: inner.runner)
+            return IO(capabilities: capabilities, runner: inner.runner)
         }
 
-        func accepted(wrapping inner: IO.Kernel<Sockets.Capabilities>) -> IO.Kernel<Sockets.Capabilities> {
+        func accepted(wrapping inner: IO<Sockets.Capabilities>) -> IO<Sockets.Capabilities> {
             let measurement = measurement
             let capabilities = Sockets.Capabilities(
                 prepare: { fd throws(Sockets.Error) in
@@ -89,7 +89,7 @@
                 send: inner.capabilities.send,
                 receive: inner.capabilities.receive
             )
-            return IO.Kernel(capabilities: capabilities, runner: inner.runner)
+            return IO(capabilities: capabilities, runner: inner.runner)
         }
     }
 

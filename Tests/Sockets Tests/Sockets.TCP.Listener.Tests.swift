@@ -19,7 +19,7 @@ extension Sockets.TCP.Listener.Tests {
 
 extension Sockets.TCP.Listener.Tests.Strategy {
 
-    func makeIO() -> IO.Kernel<Sockets.Capabilities> {
+    func makeIO() -> IO<Sockets.Capabilities> {
         switch self {
         case .blocking: return .blocking()
         case .reactive: return makeReactiveIO()
@@ -28,7 +28,7 @@ extension Sockets.TCP.Listener.Tests.Strategy {
 
     static func makeServer(
         _ strategy: Self
-    ) async throws -> (IO.Kernel<Sockets.Capabilities>, Sockets.TCP.Listener) {
+    ) async throws -> (IO<Sockets.Capabilities>, Sockets.TCP.Listener) {
         let io = strategy.makeIO()
         let listener: Sockets.TCP.Listener
         switch strategy {

@@ -18,7 +18,7 @@ extension Sockets.TCP.Listener.Tests.`Sockets.TCP.Listener — single connection
         strategy: Sockets.TCP.Listener.Tests.Strategy
     ) async throws {
         let (_, listener) = try await Sockets.TCP.Listener.Tests.Strategy.makeServer(strategy)
-        let clientIO = IO.Kernel<Sockets.Capabilities>.blocking()
+        let clientIO = IO<Sockets.Capabilities>.blocking()
         let port = try await listener.port()
 
         let payload: [UInt8] = [0xDE, 0xAD, 0xBE, 0xEF, 0xCA, 0xFE]
@@ -65,7 +65,7 @@ private func serverSideEcho(listener: Sockets.TCP.Listener) async throws -> [UIn
 }
 
 private func clientSideRoundTrip(
-    io: IO.Kernel<Sockets.Capabilities>,
+    io: IO<Sockets.Capabilities>,
     port: UInt16,
     payload: [UInt8]
 ) async throws -> [UInt8] {
