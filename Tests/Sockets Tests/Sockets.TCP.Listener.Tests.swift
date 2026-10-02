@@ -1,3 +1,4 @@
+import Executors
 import IO_Kernel
 import Kernel
 import Sockets
@@ -21,7 +22,7 @@ extension Sockets.TCP.Listener.Tests.Strategy {
 
     func makeIO() -> IO<Sockets.Capabilities> {
         switch self {
-        case .blocking: return .blocking()
+        case .blocking: return .blocking(on: Kernel.Thread.Executor(mode: .serial))
         case .reactive: return makeReactiveIO()
         }
     }
