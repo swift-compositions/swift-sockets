@@ -1,3 +1,4 @@
+import Executors
 import IO_Kernel
 import Kernel
 import Sockets
@@ -18,7 +19,6 @@ extension Sockets.TCP.Listener.Tests.`Multiple Connections` {
         strategy: Sockets.TCP.Listener.Tests.Strategy
     ) async throws {
         let (_, listener) = try await Sockets.TCP.Listener.Tests.Strategy.makeServer(strategy)
-        let clientIO = IO<Sockets.Capabilities>.blocking()
         let port = try await listener.port()
 
         let payloads: [[UInt8]] = [
@@ -32,17 +32,17 @@ extension Sockets.TCP.Listener.Tests.`Multiple Connections` {
         async let server2: [UInt8] = serverSideEcho(listener: listener)
 
         async let client0: [UInt8] = clientSideRoundTrip(
-            io: clientIO,
+            io: IO<Sockets.Capabilities>.blocking(on: Kernel.Thread.Executor(mode: .serial)),
             port: port,
             payload: payloads[0]
         )
         async let client1: [UInt8] = clientSideRoundTrip(
-            io: clientIO,
+            io: IO<Sockets.Capabilities>.blocking(on: Kernel.Thread.Executor(mode: .serial)),
             port: port,
             payload: payloads[1]
         )
         async let client2: [UInt8] = clientSideRoundTrip(
-            io: clientIO,
+            io: IO<Sockets.Capabilities>.blocking(on: Kernel.Thread.Executor(mode: .serial)),
             port: port,
             payload: payloads[2]
         )
