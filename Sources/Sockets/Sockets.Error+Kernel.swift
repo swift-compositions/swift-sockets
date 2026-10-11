@@ -25,7 +25,7 @@ extension Sockets.Error {
     }
 
     internal init(code: Error::Error.Code) {
-        if Error::Error.Code.POSIX.isECONNRESET(code) {
+        if code == .ECONNRESET {
             self = .connectionReset
         } else {
             self = .platform(code)

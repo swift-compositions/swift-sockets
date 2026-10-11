@@ -111,7 +111,7 @@ extension Sockets.TCP.Listener {
                 result = try POSIX.Kernel.Socket.Accept.accept(_fd)
             } catch {
 
-                if error.code == .POSIX.EAGAIN {
+                if error.code == .EAGAIN {
                     continue
                 }
                 throw .platform(error.code)
