@@ -32,8 +32,7 @@ extension Sockets.Event.Tests {
         let gate = Gate()
         let count = 8 * 1_024 * 1_024
 
-        let failures = await withTaskGroup(of: Sockets.Error?.self, returning: [Sockets.Error].self)
-        { group in
+        let failures = await withTaskGroup(of: Sockets.Error?.self, returning: [Sockets.Error].self) { group in
             group.addTask {
                 do throws(Sockets.Error) {
                     let connection = try await listener.accept(io: io)
@@ -163,8 +162,7 @@ extension Sockets.Event.Tests {
         }
         let payload: [UInt8] = [0x20, 0x01, 0x0d, 0xb8, 0x06]
 
-        let failures = await withTaskGroup(of: Sockets.Error?.self, returning: [Sockets.Error].self)
-        { group in
+        let failures = await withTaskGroup(of: Sockets.Error?.self, returning: [Sockets.Error].self) { group in
             group.addTask {
                 do throws(Sockets.Error) {
                     let connection = try await listener.accept(io: io)

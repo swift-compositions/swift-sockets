@@ -119,8 +119,7 @@ extension Sockets.Event.Tests {
             return
         }
 
-        let failures = await withTaskGroup(of: Sockets.Error?.self, returning: [Sockets.Error].self)
-        { group in
+        let failures = await withTaskGroup(of: Sockets.Error?.self, returning: [Sockets.Error].self) { group in
             group.addTask {
                 do throws(Sockets.Error) {
                     let connection = try await listener.accept(io: io)
@@ -197,8 +196,7 @@ extension Sockets.Event.Tests {
         }
         let started = Gate()
 
-        let failures = await withTaskGroup(of: Sockets.Error?.self, returning: [Sockets.Error].self)
-        { group in
+        let failures = await withTaskGroup(of: Sockets.Error?.self, returning: [Sockets.Error].self) { group in
             group.addTask {
                 do throws(Sockets.Error) {
                     let connection = try await listener.accept(io: io)

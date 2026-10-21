@@ -74,7 +74,7 @@ extension Kernel.Thread.Actor {
             do throws(Kernel.IO.Read.Error) {
                 return try unsafe Kernel.IO.Read.read(descriptor, into: unsafe buffer.base.nonNull)
             } catch {
-                guard (error.code == .EAGAIN || error.code == .EWOULDBLOCK) else {
+                guard error.code == .EAGAIN || error.code == .EWOULDBLOCK else {
                     throw .platform(error.code)
                 }
             }
@@ -93,7 +93,7 @@ extension Kernel.Thread.Actor {
                     from: unsafe buffer.base.nonNull
                 )
             } catch {
-                guard (error.code == .EAGAIN || error.code == .EWOULDBLOCK) else {
+                guard error.code == .EAGAIN || error.code == .EWOULDBLOCK else {
                     throw .platform(error.code)
                 }
             }
@@ -116,7 +116,7 @@ extension Kernel.Thread.Actor {
                     addressLength: length
                 )
             } catch {
-                guard (error.code == .EAGAIN || error.code == .EWOULDBLOCK) else {
+                guard error.code == .EAGAIN || error.code == .EWOULDBLOCK else {
                     throw .platform(error.code)
                 }
             }
@@ -137,7 +137,7 @@ extension Kernel.Thread.Actor {
                 let result = try POSIX.Kernel.Socket.Receive.from(descriptor, into: &span)
                 return (count: result.count, peer: result.address, length: result.addressLength)
             } catch {
-                guard (error.code == .EAGAIN || error.code == .EWOULDBLOCK) else {
+                guard error.code == .EAGAIN || error.code == .EWOULDBLOCK else {
                     throw .platform(error.code)
                 }
             }
