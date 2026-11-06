@@ -4,18 +4,18 @@ import Sockets
 import Span
 import Testing
 
-extension Sockets.TCP.Listener.Tests {
+extension `Sockets.TCP.Listener Tests`.Tests {
     @Suite
     struct `Sockets.TCP.Listener — IPv6 echo` {}
 }
 
-extension Sockets.TCP.Listener.Tests.`Sockets.TCP.Listener — IPv6 echo` {
+extension `Sockets.TCP.Listener Tests`.Tests.`Sockets.TCP.Listener — IPv6 echo` {
 
     @Test(
-        arguments: Sockets.TCP.Listener.Tests.Strategy.allCases
+        arguments: `Sockets.TCP.Listener Tests`.Tests.Strategy.allCases
     )
     func `single connection echoes payload round-trip over ::1 per IO strategy`(
-        strategy: Sockets.TCP.Listener.Tests.Strategy
+        strategy: `Sockets.TCP.Listener Tests`.Tests.Strategy
     ) async throws {
         let (_, listener) = try await makeIPv6Server(strategy)
         let clientIO = strategy.makeIO()
@@ -38,7 +38,7 @@ extension Sockets.TCP.Listener.Tests.`Sockets.TCP.Listener — IPv6 echo` {
 }
 
 private func makeIPv6Server(
-    _ strategy: Sockets.TCP.Listener.Tests.Strategy
+    _ strategy: `Sockets.TCP.Listener Tests`.Tests.Strategy
 ) async throws -> (IO<Sockets.Capabilities>, Sockets.TCP.Listener) {
     let io = strategy.makeIO()
     let listener: Sockets.TCP.Listener

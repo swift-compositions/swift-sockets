@@ -5,20 +5,20 @@ import Sockets
 import Span
 import Testing
 
-extension Sockets.TCP.Listener.Tests {
+extension `Sockets.TCP.Listener Tests`.Tests {
     @Suite
     struct `Multiple Connections` {}
 }
 
-extension Sockets.TCP.Listener.Tests.`Multiple Connections` {
+extension `Sockets.TCP.Listener Tests`.Tests.`Multiple Connections` {
 
     @Test(
-        arguments: Sockets.TCP.Listener.Tests.Strategy.allCases
+        arguments: `Sockets.TCP.Listener Tests`.Tests.Strategy.allCases
     )
     func `three concurrent connections echoed correctly round-trip per IO strategy`(
-        strategy: Sockets.TCP.Listener.Tests.Strategy
+        strategy: `Sockets.TCP.Listener Tests`.Tests.Strategy
     ) async throws {
-        let (_, listener) = try await Sockets.TCP.Listener.Tests.Strategy.makeServer(strategy)
+        let (_, listener) = try await `Sockets.TCP.Listener Tests`.Tests.Strategy.makeServer(strategy)
         let port = try await listener.port()
 
         let payloads: [[UInt8]] = [

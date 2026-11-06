@@ -4,20 +4,20 @@ import Sockets
 import Span
 import Testing
 
-extension Sockets.TCP.Listener.Tests {
+extension `Sockets.TCP.Listener Tests`.Tests {
     @Suite
     struct `Client Connect` {}
 }
 
-extension Sockets.TCP.Listener.Tests.`Client Connect` {
+extension `Sockets.TCP.Listener Tests`.Tests.`Client Connect` {
 
     @Test(
-        arguments: Sockets.TCP.Listener.Tests.Strategy.allCases
+        arguments: `Sockets.TCP.Listener Tests`.Tests.Strategy.allCases
     )
     func `connect() client echoes payload round-trip per IO strategy`(
-        strategy: Sockets.TCP.Listener.Tests.Strategy
+        strategy: `Sockets.TCP.Listener Tests`.Tests.Strategy
     ) async throws {
-        let (_, listener) = try await Sockets.TCP.Listener.Tests.Strategy.makeServer(strategy)
+        let (_, listener) = try await `Sockets.TCP.Listener Tests`.Tests.Strategy.makeServer(strategy)
         let clientIO = strategy.makeIO()
         let port = try await listener.port()
 

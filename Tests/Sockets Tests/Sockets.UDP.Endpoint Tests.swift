@@ -5,18 +5,20 @@ import Sockets
 import Span
 import Testing
 
-extension Sockets.UDP.Endpoint {
+enum `Sockets.UDP.Endpoint Tests` {}
+
+extension `Sockets.UDP.Endpoint Tests` {
 
     @Suite(.serialized)
     enum Tests {}
 }
 
-extension Sockets.UDP.Endpoint.Tests {
+extension `Sockets.UDP.Endpoint Tests`.Tests {
     @Suite
     struct `Sockets.UDP.Endpoint — datagram round-trip` {}
 }
 
-extension Sockets.UDP.Endpoint.Tests.`Sockets.UDP.Endpoint — datagram round-trip` {
+extension `Sockets.UDP.Endpoint Tests`.Tests.`Sockets.UDP.Endpoint — datagram round-trip` {
 
     @Test
     func `IPv4 datagram round-trips client to server and back to peer`() async throws {

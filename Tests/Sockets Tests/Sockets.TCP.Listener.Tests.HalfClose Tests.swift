@@ -4,20 +4,20 @@ import Sockets
 import Span
 import Testing
 
-extension Sockets.TCP.Listener.Tests {
+extension `Sockets.TCP.Listener Tests`.Tests {
     @Suite
     struct `Half Close` {}
 }
 
-extension Sockets.TCP.Listener.Tests.`Half Close` {
+extension `Sockets.TCP.Listener Tests`.Tests.`Half Close` {
 
     @Test(
-        arguments: Sockets.TCP.Listener.Tests.Strategy.allCases
+        arguments: `Sockets.TCP.Listener Tests`.Tests.Strategy.allCases
     )
     func `half-close echo: shutdown(.write) sends FIN, peer reads EOF per IO strategy`(
-        strategy: Sockets.TCP.Listener.Tests.Strategy
+        strategy: `Sockets.TCP.Listener Tests`.Tests.Strategy
     ) async throws {
-        let (_, listener) = try await Sockets.TCP.Listener.Tests.Strategy.makeServer(strategy)
+        let (_, listener) = try await `Sockets.TCP.Listener Tests`.Tests.Strategy.makeServer(strategy)
         let clientIO = IO<Sockets.Capabilities>.blocking()
         let port = try await listener.port()
 

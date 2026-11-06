@@ -5,12 +5,12 @@ import Sockets
 import Span
 import Testing
 
-extension Sockets.TCP.Listener.Tests {
+extension `Sockets.TCP.Listener Tests`.Tests {
     @Suite
     struct `Accept On Different IO` {}
 }
 
-extension Sockets.TCP.Listener.Tests.`Accept On Different IO` {
+extension `Sockets.TCP.Listener Tests`.Tests.`Accept On Different IO` {
 
     @Test
     func

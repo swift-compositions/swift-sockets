@@ -4,13 +4,15 @@ import Kernel
 import Sockets
 import Testing
 
-extension Sockets.TCP.Listener {
+enum `Sockets.TCP.Listener Tests` {}
+
+extension `Sockets.TCP.Listener Tests` {
 
     @Suite(.serialized)
     enum Tests {}
 }
 
-extension Sockets.TCP.Listener.Tests {
+extension `Sockets.TCP.Listener Tests`.Tests {
 
     enum Strategy: Sendable, CaseIterable {
         case blocking
@@ -18,7 +20,7 @@ extension Sockets.TCP.Listener.Tests {
     }
 }
 
-extension Sockets.TCP.Listener.Tests.Strategy {
+extension `Sockets.TCP.Listener Tests`.Tests.Strategy {
 
     func makeIO() -> IO<Sockets.Capabilities> {
         switch self {

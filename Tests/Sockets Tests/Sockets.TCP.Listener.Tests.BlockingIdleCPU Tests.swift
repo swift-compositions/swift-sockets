@@ -5,12 +5,12 @@
     import IO_Kernel
     import Sockets
 
-    extension Sockets.TCP.Listener.Tests {
+    extension `Sockets.TCP.Listener Tests`.Tests {
         @Suite
         struct `Blocking Idle CPU` {}
     }
 
-    extension Sockets.TCP.Listener.Tests.`Blocking Idle CPU` {
+    extension `Sockets.TCP.Listener Tests`.Tests.`Blocking Idle CPU` {
 
         @Test
         func `blocking listener sleeps in kernel during idle accept`() async throws {

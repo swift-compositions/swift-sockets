@@ -5,7 +5,7 @@
     import Sockets
     import Synchronization
 
-    extension Sockets.TCP.Listener.Tests.`Blocking Idle CPU` {
+    extension `Sockets.TCP.Listener Tests`.Tests.`Blocking Idle CPU` {
         final class Measurement: Sendable {
             fileprivate let samples = Mutex<
                 (
@@ -16,7 +16,7 @@
         }
     }
 
-    extension Sockets.TCP.Listener.Tests.`Blocking Idle CPU`.Measurement {
+    extension `Sockets.TCP.Listener Tests`.Tests.`Blocking Idle CPU`.Measurement {
 
         var record: Record { Record(measurement: self) }
 
@@ -30,17 +30,17 @@
         }
     }
 
-    extension Sockets.TCP.Listener.Tests.`Blocking Idle CPU`.Measurement {
+    extension `Sockets.TCP.Listener Tests`.Tests.`Blocking Idle CPU`.Measurement {
         struct Record: Sendable {
-            fileprivate let measurement: Sockets.TCP.Listener.Tests.`Blocking Idle CPU`.Measurement
+            fileprivate let measurement: `Sockets.TCP.Listener Tests`.Tests.`Blocking Idle CPU`.Measurement
         }
 
         struct Wrap: Sendable {
-            fileprivate let measurement: Sockets.TCP.Listener.Tests.`Blocking Idle CPU`.Measurement
+            fileprivate let measurement: `Sockets.TCP.Listener Tests`.Tests.`Blocking Idle CPU`.Measurement
         }
     }
 
-    extension Sockets.TCP.Listener.Tests.`Blocking Idle CPU`.Measurement.Record {
+    extension `Sockets.TCP.Listener Tests`.Tests.`Blocking Idle CPU`.Measurement.Record {
 
         func before() {
             measurement.samples.withLock { samples in
@@ -55,7 +55,7 @@
         }
     }
 
-    extension Sockets.TCP.Listener.Tests.`Blocking Idle CPU`.Measurement.Wrap {
+    extension `Sockets.TCP.Listener Tests`.Tests.`Blocking Idle CPU`.Measurement.Wrap {
         func listener(wrapping inner: IO<Sockets.Capabilities>) -> IO<Sockets.Capabilities> {
             let measurement = measurement
             let capabilities = unsafe Sockets.Capabilities(
