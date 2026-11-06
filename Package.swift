@@ -37,7 +37,7 @@ let package = Package(
         .testTarget(
             name: "Sockets Tests",
             dependencies: [
-                "Sockets",
+                .target(name: "Sockets"),
                 .product(name: "IO Kernel", package: "swift-io-kernel"),
                 .product(name: "Kernel", package: "swift-kernel"),
                 .product(name: "Span", package: "swift-span"),
