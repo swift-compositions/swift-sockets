@@ -10,7 +10,6 @@ extension `Sockets.TCP.Listener Tests`.Tests {
 }
 
 extension `Sockets.TCP.Listener Tests`.Tests.`Client Connect` {
-
     @Test(
         arguments: `Sockets.TCP.Listener Tests`.Tests.Strategy.allCases
     )
@@ -60,7 +59,7 @@ private func serverSideEcho(listener: Sockets.TCP.Listener) async throws -> [UIn
 
     var bytes: [UInt8] = []
     bytes.reserveCapacity(readCount)
-    for i in 0..<readCount { bytes.append(unsafe buffer[i]) }
+    (0..<readCount).forEach { i in bytes.append(unsafe buffer[i]) }
     return bytes
 }
 
@@ -95,6 +94,6 @@ private func clientConnectRoundTrip(
 
     var bytes: [UInt8] = []
     bytes.reserveCapacity(readCount)
-    for i in 0..<readCount { bytes.append(unsafe readPtr[i]) }
+    (0..<readCount).forEach { i in bytes.append(unsafe readPtr[i]) }
     return bytes
 }

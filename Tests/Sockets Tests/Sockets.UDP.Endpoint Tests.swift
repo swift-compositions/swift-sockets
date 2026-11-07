@@ -8,7 +8,6 @@ import Testing
 enum `Sockets.UDP.Endpoint Tests` {}
 
 extension `Sockets.UDP.Endpoint Tests` {
-
     @Suite(.serialized)
     enum Tests {}
 }
@@ -19,7 +18,6 @@ extension `Sockets.UDP.Endpoint Tests`.Tests {
 }
 
 extension `Sockets.UDP.Endpoint Tests`.Tests.`Sockets.UDP.Endpoint — datagram round-trip` {
-
     @Test
     func `IPv4 datagram round-trips client to server and back to peer`() async throws {
         let serverIO = IO<Sockets.Capabilities>.blocking(on: Kernel.Thread.Executor(mode: .serial))
@@ -51,7 +49,7 @@ extension `Sockets.UDP.Endpoint Tests`.Tests.`Sockets.UDP.Endpoint — datagram 
         let (received, peer, peerLength) = unsafe try await server.receive(into: unsafe .init(recvPtr))
         var serverBytes: [UInt8] = []
         serverBytes.reserveCapacity(received)
-        for i in 0..<received { serverBytes.append(unsafe recvPtr[i]) }
+        (0..<received).forEach { i in serverBytes.append(unsafe recvPtr[i]) }
         #expect(serverBytes == payload, "Server received the datagram the client sent.")
         #expect(peer.family == .inet, "Reported sender address is IPv4.")
 
@@ -65,7 +63,7 @@ extension `Sockets.UDP.Endpoint Tests`.Tests.`Sockets.UDP.Endpoint — datagram 
         let (echoCount, _, _) = unsafe try await client.receive(into: unsafe .init(clientRecvPtr))
         var clientBytes: [UInt8] = []
         clientBytes.reserveCapacity(echoCount)
-        for i in 0..<echoCount { clientBytes.append(unsafe clientRecvPtr[i]) }
+        (0..<echoCount).forEach { i in clientBytes.append(unsafe clientRecvPtr[i]) }
         #expect(
             clientBytes == payload,
             "Client received its datagram echoed back to its peer address."
@@ -106,7 +104,7 @@ extension `Sockets.UDP.Endpoint Tests`.Tests.`Sockets.UDP.Endpoint — datagram 
         let (received, peer, peerLength) = unsafe try await server.receive(into: unsafe .init(recvPtr))
         var serverBytes: [UInt8] = []
         serverBytes.reserveCapacity(received)
-        for i in 0..<received { serverBytes.append(unsafe recvPtr[i]) }
+        (0..<received).forEach { i in serverBytes.append(unsafe recvPtr[i]) }
         #expect(serverBytes == payload, "Server received the datagram the client sent.")
         #expect(peer.family == .inet6, "Reported sender address is IPv6.")
 
@@ -120,7 +118,7 @@ extension `Sockets.UDP.Endpoint Tests`.Tests.`Sockets.UDP.Endpoint — datagram 
         let (echoCount, _, _) = unsafe try await client.receive(into: unsafe .init(clientRecvPtr))
         var clientBytes: [UInt8] = []
         clientBytes.reserveCapacity(echoCount)
-        for i in 0..<echoCount { clientBytes.append(unsafe clientRecvPtr[i]) }
+        (0..<echoCount).forEach { i in clientBytes.append(unsafe clientRecvPtr[i]) }
         #expect(
             clientBytes == payload,
             "Client received its datagram echoed back to its peer address."
