@@ -1,5 +1,5 @@
-public import Kernel
 internal import IO_Kernel
+public import Kernel
 
 extension Sockets {
 
@@ -93,10 +93,11 @@ extension Sockets.Error {
     }
 
     internal init(code: Error::Error.Code) {
-        self = if code == .ECONNRESET {
-            .connectionReset
-        } else {
-            .platform(code)
-        }
+        self =
+            if code == .ECONNRESET {
+                .connectionReset
+            } else {
+                .platform(code)
+            }
     }
 }
