@@ -93,10 +93,10 @@ extension Sockets.Error {
     }
 
     internal init(code: Error::Error.Code) {
-        if code == .ECONNRESET {
-            self = .connectionReset
+        self = if code == .ECONNRESET {
+            .connectionReset
         } else {
-            self = .platform(code)
+            .platform(code)
         }
     }
 }
