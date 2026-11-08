@@ -72,7 +72,7 @@ extension `Sockets.TCP.Listener Tests`.Tests.`Half Close` {
 
                 var received: [UInt8] = []
                 received.reserveCapacity(n)
-                for i in 0..<n { received.append(unsafe rbuf[i]) }
+                (0..<n).forEach { i in received.append(unsafe rbuf[i]) }
                 #expect(received == payload, "Client received its own payload echoed back.")
 
                 let eof = unsafe try await clientIO.read(from: descriptor, into: unsafe .init(rbuf))
