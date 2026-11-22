@@ -47,7 +47,7 @@ extension Sockets.Event.Tests {
         let address = Kernel.Socket.Address.IPv4.loopback(port: port)
 
         do throws(Kernel.Socket.Error) {
-            try ISO_9945.Kernel.Socket.Connect.connect(
+            try ISO.`9945`.Kernel.Socket.Connect.connect(
                 descriptor,
                 address: address.storage,
                 length: Kernel.Socket.Address.IPv4.size
@@ -63,7 +63,7 @@ extension Sockets.Event.Tests {
                 Issue.record("Write-readiness completion failed: \(error)")
             }
             do throws(Kernel.Socket.Error) {
-                let pending = try ISO_9945.Kernel.Socket.getError(descriptor)
+                let pending = try ISO.`9945`.Kernel.Socket.getError(descriptor)
                 #expect(
                     pending != .posix(0),
                     "Write readiness alone is not connection success; SO_ERROR must carry the refusal."

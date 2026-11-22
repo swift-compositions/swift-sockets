@@ -73,7 +73,7 @@ extension Sockets.Event.Tests {
                         io: io
                     )
                     do throws(Kernel.Socket.Error) {
-                        try ISO_9945.Kernel.Socket.Option.set(
+                        try ISO.`9945`.Kernel.Socket.Option.set(
                             connection.descriptor,
                             level: .socket,
                             name: .sendBuffer,

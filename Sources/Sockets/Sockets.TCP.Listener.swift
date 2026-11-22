@@ -106,7 +106,7 @@ extension Sockets.TCP.Listener {
         while true {
             try await _io.ready(from: _fd, interest: .read)
 
-            let result: ISO_9945.Kernel.Socket.Accept.Result
+            let result: ISO.`9945`.Kernel.Socket.Accept.Result
             do throws(Kernel.Socket.Error) {
                 result = try POSIX.Kernel.Socket.Accept.accept(_fd)
             } catch {

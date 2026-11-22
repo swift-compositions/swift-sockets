@@ -102,7 +102,7 @@ extension Sockets.TCP.Connection {
     ) async throws(Sockets.Error) {
 
         do throws(Kernel.Socket.Error) {
-            try ISO_9945.Kernel.Socket.Connect.connect(descriptor, address: address, length: length)
+            try ISO.`9945`.Kernel.Socket.Connect.connect(descriptor, address: address, length: length)
             return
         } catch {
             let code = error.code
@@ -115,7 +115,7 @@ extension Sockets.TCP.Connection {
 
         let pending: Error::Error.Code
         do throws(Kernel.Socket.Error) {
-            pending = try ISO_9945.Kernel.Socket.getError(descriptor)
+            pending = try ISO.`9945`.Kernel.Socket.getError(descriptor)
         } catch {
             throw Sockets.Error(error)
         }
